@@ -22,25 +22,28 @@ module.exports = () => {
         template: './index.html',
         title: 'Webpack Plugin',
       }),
-      new MiniCssExtractPlugin(),
       new InjectManifest({
-        swSrc: './src/sw.js',
-        swDest: 'sw.js',
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
       }),
       // add WebpackPwaManifest
       new WebpackPwaManifest({
-        name: 'text_editor',
+        fingerprints: false,
+        inject: true,
+        name: 'text-editor',
         short_name: 'JATE',
         description: 'Just Another Text Editor',
-        background_color: '#ffffff',
+        background_color: '#225ca3',
+        theme_color: '#225ca3',
         start_url: './',
         publicPath: './',
         icons: [
           {
-            src: path.resolve('./src/images/logo.png'),
-            sizes: [96, 128, 192, 256, 384, 512]
+            src: path.resolve('src/images/logo.png'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons'),
           },
-        ]
+        ],
       }),
     ],
 
@@ -48,7 +51,7 @@ module.exports = () => {
       rules: [
         {
           test: /\.css$/i,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
